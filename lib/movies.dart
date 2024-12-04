@@ -95,9 +95,9 @@ class MovieScreen extends StatelessWidget {
           // Movie Cards Grid
           Expanded(
             child: GridView.count(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(30),
               crossAxisCount: 2,
-              mainAxisSpacing: 16,
+              mainAxisSpacing: 50,
               crossAxisSpacing: 16,
               childAspectRatio: 0.7,
               children: [
@@ -146,6 +146,7 @@ class MovieCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 200,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
@@ -164,7 +165,7 @@ class MovieCard extends StatelessWidget {
             borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
             child: Image.asset(
               imagePath,
-              height: 140,
+              height: 200,
               width: double.infinity,
               fit: BoxFit.cover,
             ),

@@ -1,203 +1,421 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart';
+
 import 'package:ukl/Bottomnav.dart';
 
-class Dashboard extends StatelessWidget {
+class Dashboard extends StatefulWidget {
+  const Dashboard({super.key});
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<Dashboard> {
+  PageController _pageController = PageController(viewportFraction: 0.7);
+  double _currentPageValue = 0;
+
+  // Daftar gambar
+  List<String> movieImages = [
+    'assets/anna.jpg',
+    'assets/black.jpg',
+    'assets/movie1.jpeg',
+    'assets/Petakumpet.jpg',
+    'assets/movie4.jpg',
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    // Listener untuk melacak perubahan posisi gambar
+    _pageController.addListener(() {
+      setState(() {
+        _currentPageValue = _pageController.page!;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _pageController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
         backgroundColor: Colors.white,
-        elevation: 0,
-        leading: Icon(Icons.location_on, color: Colors.black),
-        title: Text('Malang', style: TextStyle(color: Colors.black)),
-        actions: [
-          Icon(Icons.favorite_border, color: Colors.black),
-          SizedBox(width: 16),
-          Icon(Icons.notifications_none, color: Colors.black),
-          SizedBox(width: 16),
-          Icon(CupertinoIcons.person_circle_fill, color: Colors.black),
-          SizedBox(width: 16),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'Hello, Guest',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 4),
-              Text('Kamu mau nonton apa hari ini?'),
-
-              // Advance Ticket Sales Section
-              SizedBox(height: 16),
-              CarouselSlider(
-                options: CarouselOptions(
-                  height: 400,
-                  enlargeCenterPage: true,
-                  enableInfiniteScroll: true,
-                  autoPlay: true,
+              // Location Section with Border
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey.shade300),
+                  borderRadius: BorderRadius.circular(20),
                 ),
-                items: [
-                  'assets/Petakumpet.jpg',
-                  'assets/gladiator.jpeg',
-                ].map((imagePath) {
-                  return Builder(
-                    builder: (BuildContext context) {
-                      return Container(
-                        width: MediaQuery.of(context).size.width,
-                        margin: EdgeInsets.symmetric(horizontal: 0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(7),
-                          image: DecorationImage(
-                            image: AssetImage(imagePath),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                }).toList(),
-              ),
-
-              // Now Showing Section
-              SizedBox(height: 24),
-              SectionHeader(title: 'Now Showing'),
-              SizedBox(height: 8),
-              CarouselSlider(
-                options: CarouselOptions(
-                  height: 250,
-                  enlargeCenterPage: true,
-                  enableInfiniteScroll: true,
-                  autoPlay: false,
+                child: const Row(
+                  children: [
+                    Icon(Icons.location_on,
+                        color: Color.fromARGB(246, 3, 38, 112)),
+                    SizedBox(width: 5),
+                    Text(
+                      'Malang',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(width: 10),
+                    Icon(Icons.arrow_drop_down,
+                        color: Color.fromARGB(246, 3, 38, 112)),
+                  ],
                 ),
-                items: [
-                  'assets/movie1.jpeg',
-                  'assets/movie2.jpeg',
-                  'assets/movie4.jpg',
-                  'assets/anna.jpg',
-                ].map((imagePath) {
-                  return Builder(
-                    builder: (BuildContext context) {
-                      return Container(
-                        width: MediaQuery.of(context).size.width / 2.5,
-                        margin: EdgeInsets.symmetric(horizontal: 5.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          image: DecorationImage(
-                            image: AssetImage(imagePath),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                }).toList(),
               ),
-
-              // Upcoming Section
-              SizedBox(height: 24),
-              SectionHeader(title: 'Upcoming'),
-              SizedBox(height: 8),
-              CarouselSlider(
-                options: CarouselOptions(
-                  height: 250,
-                  enlargeCenterPage: true,
-                  enableInfiniteScroll: true,
-                  autoPlay: false,
-                ),
-                items: [
-                  'assets/redone.png',
-                  'assets/exh.jpeg',
-                  'assets/black.jpg',
-                  'assets/redone.png',
-                  'assets/movie3.png',
-                ].map((imagePath) {
-                  return Builder(
-                    builder: (BuildContext context) {
-                      return Container(
-                        width: MediaQuery.of(context).size.width / 2.5,
-                        margin: EdgeInsets.symmetric(horizontal: 0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          image: DecorationImage(
-                            image: AssetImage(imagePath),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                }).toList(),
-              ),
-
-              // Promotion Section
-              SizedBox(height: 24),
-              SectionHeader(title: 'Promotion'),
-              SizedBox(height: 8),
-              CarouselSlider(
-                options: CarouselOptions(
-                  height: 600,
-                  enlargeCenterPage: true,
-                  enableInfiniteScroll: true,
-                  autoPlay: false,
-                ),
-                items: [
-                  'assets/anna.jpg',
-                  'assets/black.jpg',
-                ].map((imagePath) {
-                  return Builder(
-                    builder: (BuildContext context) {
-                      return Container(
-                        margin: EdgeInsets.symmetric(horizontal: 5.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          image: DecorationImage(
-                            image: AssetImage(imagePath),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                }).toList(),
+              // Right-side icons (Like, Notification, Profile)
+              const Row(
+                children: [
+                  Icon(Icons.favorite, color: Color.fromARGB(246, 3, 38, 112)),
+                  SizedBox(width: 20),
+                  Icon(Icons.notifications,
+                      color: Color.fromARGB(246, 3, 38, 112)),
+                  SizedBox(width: 20),
+                  Icon(Icons.account_circle,
+                      color: Color.fromARGB(246, 3, 38, 112)),
+                ],
               ),
             ],
           ),
         ),
-      ),
-      bottomNavigationBar: BottomNav(0),
-    );
-  }
-}
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Greeting Section
+                const Text(
+                  'Hello, Guest',
+                  style: TextStyle(
+                    fontSize: 32,
+                    fontFamily: 'Jaro',
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                const Text(
+                  'Kamu mau nonton apa hari ini?',
+                  style: TextStyle(
+                      fontSize: 16, color: Color.fromARGB(246, 15, 15, 15)),
+                ),
+                const SizedBox(height: 20),
 
-class SectionHeader extends StatelessWidget {
-  final String title;
+                // Landscape Image Container Section (Scroll Horizontal)
+                SizedBox(
+                  height: 200, // Height of the container
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal, // Scroll horizontally
+                    child: Row(
+                      children: [
+                        // Container 1 - Image 1
+                        Container(
+                          width: 300,
+                          margin: const EdgeInsets.symmetric(horizontal: 5),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            image: const DecorationImage(
+                              image: AssetImage('assets/movie1.jpeg'),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        // Container 2 - Image 2
+                        Container(
+                          width: 300,
+                          margin: const EdgeInsets.symmetric(horizontal: 5),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            image: const DecorationImage(
+                              image: AssetImage('assets/movie2.jpeg'),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        // Container 3 - Image 3
+                        Container(
+                          width: 300,
+                          margin: const EdgeInsets.symmetric(horizontal: 5),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            image: const DecorationImage(
+                              image: AssetImage('assets/movie3.png'),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        // Container 4 - Image 4
+                        Container(
+                          width: 300,
+                          margin: const EdgeInsets.symmetric(horizontal: 5),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            image: const DecorationImage(
+                              image: AssetImage('assets/movie1.jpeg'),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        // Container 5 - Image 5
+                        Container(
+                          width: 300,
+                          margin: const EdgeInsets.symmetric(horizontal: 5),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            image: const DecorationImage(
+                              image: AssetImage('assets/black.jpg'),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
 
-  SectionHeader({required this.title});
+                const SizedBox(height: 30),
 
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          title,
-          style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Color.fromARGB(255, 9, 70, 120)),
+                // Now Showing Section with See All
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Now Showing',
+                      style: TextStyle(
+                        fontSize: 24,
+                        color: Color.fromARGB(246, 3, 38, 112),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      'See All',
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: Color.fromARGB(255, 121, 118, 118)),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                SizedBox(
+                  height: 400,
+                  child: PageView.builder(
+                    controller: _pageController,
+                    itemCount: movieImages.length,
+                    itemBuilder: (context, index) {
+                      double scale = 1.0;
+                      double opacity = 4.0;
+
+                      // Menentukan skala dan opacity berdasarkan posisi
+                      if (index == _currentPageValue.floor()) {
+                        // Gambar di tengah
+                        scale = 1.0;
+                        opacity = 1.0;
+                      } else if (index == _currentPageValue.floor() + 1 ||
+                          index == _currentPageValue.floor() - 1) {
+                        // Gambar di kiri atau kanan
+                        scale = 0.8;
+                        opacity = 0.5;
+                      } else {
+                        // Gambar yang lebih jauh
+                        scale = 0.6;
+                        opacity = 0.3;
+                      }
+
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 3),
+                        child: Transform.scale(
+                          scale: scale,
+                          child: Opacity(
+                            opacity: opacity,
+                            child: Container(
+                              width: 160,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                image: DecorationImage(
+                                  image: AssetImage(movieImages[index]),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(height: 30),
+
+                // Upcoming Section with See All
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Upcoming',
+                      style: TextStyle(
+                        fontSize: 24,
+                        color: Color.fromARGB(246, 3, 38, 112),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      'See All',
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: Color.fromARGB(255, 121, 118, 118)),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                SizedBox(
+                  height: 250,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      // Container 1 - Image 1
+                      Container(
+                        width: 300,
+                        margin: const EdgeInsets.symmetric(horizontal: 5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          image: const DecorationImage(
+                            image: AssetImage('assets/movie3.png'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      // Container 2 - Image 2
+                      Container(
+                        width: 300,
+                        margin: const EdgeInsets.symmetric(horizontal: 5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          image: const DecorationImage(
+                            image: AssetImage('assets/movie4.jpg'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      // Container 3 - Image 3
+                      Container(
+                        width: 300,
+                        margin: const EdgeInsets.symmetric(horizontal: 5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          image: const DecorationImage(
+                            image: AssetImage('assets/redone.png'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: 300,
+                        margin: const EdgeInsets.symmetric(horizontal: 5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          image: const DecorationImage(
+                            image: AssetImage('assets/movie2.jpeg'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: 300,
+                        margin: const EdgeInsets.symmetric(horizontal: 5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          image: const DecorationImage(
+                            image: AssetImage('assets/movie1.jpeg'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 30),
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Promotion',
+                      style: TextStyle(
+                        fontSize: 24,
+                        color: Color.fromARGB(246, 3, 38, 112),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      'See All',
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: Color.fromARGB(255, 121, 118, 118)),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
+                  height: 200, // Height of the container
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal, // Scroll horizontally
+                    child: Row(
+                      children: [
+                        // Container 1 - Image 1
+                        Container(
+                          width: 500,
+                          margin: const EdgeInsets.symmetric(horizontal: 5),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            image: const DecorationImage(
+                              image: AssetImage('assets/movie2.jpeg'),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        // Container 2 - Image 2
+                        Container(
+                          width: 500,
+                          margin: const EdgeInsets.symmetric(horizontal: 5),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            image: const DecorationImage(
+                              image: AssetImage('assets/gladiator.jpeg'),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        // Container 3 - Image 3
+                        Container(
+                          width: 500,
+                          margin: const EdgeInsets.symmetric(horizontal: 5),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            image: const DecorationImage(
+                              image: AssetImage('assets/gladiator.jpg'),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
-        Text(
-          'See All',
-          style: TextStyle(color: Colors.blue),
-        ),
-      ],
-    );
+        // Add BottomNavigationBar here
+        bottomNavigationBar: BottomNav(0));
   }
 }
